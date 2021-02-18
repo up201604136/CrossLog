@@ -1,0 +1,72 @@
+<!doctype html>
+<!-- Note that adding an appcache really speeds things up after the first load
+    You need to amend the appcache file to meet your needs.
+    Don't forget to change the appcache file if you update ANY
+    of the files in it otherwise the old versions will ALWAYS be used.
+<html lang="en" manifest="./uibuilder.appcache">
+-->
+<html lang="en">
+<!--
+    This is the default, template html for uibuilder.
+    It is meant to demonstrate the use of VueJS & bootstrap-vue to dynamically
+    update the ui based on incoming/outgoing messages from/to the
+    Node-RED server.
+-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Node-RED UI Builder - VueJS + bootstrap-vue default template</title>
+    <meta name="description" content="Node-RED UI Builder - VueJS + bootstrap-vue default template">
+    <script src="https://kit.fontawesome.com/1ea3e5c685.js" crossorigin="anonymous"></script>
+
+    <link rel="icon" href="./images/node-blue.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="../uibuilder/vendor/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.css" />
+    <!-- Your own CSS -->
+    <link type="text/css" rel="stylesheet" href="./index.css" media="all">
+
+</head><body>
+
+    <div id="app" v-cloak>
+        <b-container id="app_container">
+          <template>
+<!-- Material form login -->
+                    <form>
+                          <p class="h4 text-center mb-4">Sign in</p>
+                              <div class="grey-text">
+                              <mdb-input label="Your email" icon="envelope" type="email"/>
+                              <mdb-input label="Your password" icon="lock" type="password"/>
+                              </div>
+                              <div class="text-center">
+                              <mdb-btn>Login</mdb-btn>
+                              </div>
+                    </form>
+          <!-- Material form login -->
+          </template>
+
+        </b-container>
+    </div>
+
+    <!-- Dont forget to use minified versions of libraries for production, non-min versions for development only -->
+    <!-- These MUST be in the right order. Note no leading / -->
+
+    <!-- REQUIRED: Socket.IO is loaded only once for all instances. Without this, you don't get a websocket connection -->
+    <script src="../uibuilder/vendor/socket.io/socket.io.js"></script>
+
+    <!-- --- Vendor Libraries - Load in the right order --- -->
+    <script src="../uibuilder/vendor/vue/dist/vue.js"></script> <!-- dev version with component compiler -->
+    <!-- <script src="../uibuilder/vendor/vue/dist/vue.min.js"></script>   prod version with component compiler -->
+    <!-- <script src="../uibuilder/vendor/vue/dist/vue.runtime.min.js"></script>   prod version without component compiler -->
+    <script src="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.js"></script>
+
+    <!-- REQUIRED: Sets up Socket listeners and the msg object -->
+    <script src="./uibuilderfe.js"></script> <!-- dev version -->
+    <!-- <script src="./uibuilderfe.min.js"></script>     //prod version -->
+
+    <!-- OPTIONAL: You probably want this. Put your custom code here -->
+    <script src="./index.js"></script>
+
+</body></html>

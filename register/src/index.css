@@ -1,0 +1,45 @@
+/* Cloak elements on initial load to hide the possible display of {{ ... }}
+ * Add to the app tag or to specific tags
+ * To display "loading...", change to the following:
+ *    [v-cloak] > * { display:none }
+ *    [v-cloak]::before { content: "loading…" }
+ */
+
+[v-cloak] { display: none; }
+
+/*  Colours for Syntax Highlighted pre's */
+.syntax-highlight {color:white;background-color:black;padding:5px 10px;}
+.syntax-highlight > .key {color:#ffbf35}
+.syntax-highlight > .string {color:#5dff39;}
+.syntax-highlight > .number {color:#70aeff;}
+.syntax-highlight > .boolean {color:#b993ff;}
+
+.login_form{
+    width: 600px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+    margin-left: 23%;
+
+}
+.login{
+  border-radius: 2%;
+  border: 5px solid #60be19;
+  padding: 20px 10px 10px 20px;
+
+}
+h6 a{
+  color: black;
+}
+img{
+  width: 150px;
+}
+.foto_info{
+  padding: 15px;
+  margin-top: 20px;
+}
+h5{
+  font-size: 15px;
+  color: black;
+  margin-top: 10px;
+}
