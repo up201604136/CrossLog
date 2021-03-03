@@ -6,6 +6,12 @@
         <md-table-cell md-label="Country">{{ item.country }}</md-table-cell>
         <md-table-cell md-label="City">{{ item.city }}</md-table-cell>
         <md-table-cell md-label="Salary">{{ item.salary }}</md-table-cell>
+        <md-table-cell md-label="Actions">
+           <a v-if="$keycloak.tokenParsed.given_name == 'Administrador'" href=""><md-icon style="color:black">keyboard_arrow_up</md-icon></a>
+           <a v-if="$keycloak.tokenParsed.given_name == 'Administrador'" href=""><md-icon style="color:black">keyboard_arrow_down</md-icon></a>
+           <a href=""><md-icon style="color:black">add</md-icon></a>
+           <a v-if="$keycloak.tokenParsed.given_name == 'Administrador'" href=""><md-icon style="color:red">cancel</md-icon></a>
+        </md-table-cell>
       </md-table-row>
     </md-table>
   </div>

@@ -2,7 +2,7 @@
   <ul class="nav nav-mobile-menu">
     <li>
       <md-field>
-        <label>ss</label>
+        <label>Search</label>
         <md-input v-model="search" type="text"></md-input>
       </md-field>
     </li>

@@ -27,6 +27,10 @@ import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
 import Notifications from "@/pages/Notifications.vue";
 import UpgradeToPRO from "@/pages/UpgradeToPRO.vue";
+import ID_Weight from "@/pages/ID_Weight.vue";
+import dynamic_acc from "@/pages/dynamic_acc.vue";
+import palletization from "@/pages/palletization.vue";
+import progressive_involvment from "@/pages/progressive_involvment.vue";
 // router setup
 
 // Plugins
@@ -67,6 +71,26 @@ const router = new VueRouter({
       component: DashboardLayout,
       redirect: "/dashboard",
       children: [
+        {
+          path: "progressive_involvment",
+          name: "progressive_involvment",
+          component: progressive_involvment
+        },
+        {
+          path: "palletization",
+          name: "palletization",
+          component: palletization
+        },
+        {
+          path: "dynamic_acc",
+          name: "dynamic_acc",
+          component: dynamic_acc
+        },
+        {
+          path: "ID_Weight",
+          name: "ID_Weight",
+          component: ID_Weight
+        },
         {
           path: "dashboard",
           name: "Dashboard",

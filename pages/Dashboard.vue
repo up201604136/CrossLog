@@ -74,58 +74,67 @@
                       </div>
           </template>
    <template slot="footer">
-            <div class="stats">
+            <div v-if="aux == '22'" class="stats">
               <md-icon class="text-danger">update</md-icon>
               <a href="#pablo">Update variables</a>
             </div>
-          </template>
-        </stats-card>
-      </div>
-
-      <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
-      >
-        <stats-card data-background-color="red">
-          <template slot="header">
-            <md-icon>info_outline</md-icon>
-          </template>
-
-          <template slot="content">
-            <p class="category">Fixed Issues</p>
-            <h3 class="title">75</h3>
-          </template>
-
-          <template slot="footer">
-            <div class="stats">
-              <md-icon>local_offer</md-icon>
-              Tracked from Github
+            <div v-else class="stats">
+              <md-icon class="text-danger">update</md-icon>
+              <a href="#pablo">No updates needed</a>
             </div>
           </template>
         </stats-card>
       </div>
       <div
-        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
+        class="md-layout-item md-medium-size-120 md-small-size-150 md-size-50"
       >
-        <stats-card data-background-color="blue">
-          <template slot="header">
-            <i class="fab fa-twitter"></i>
-          </template>
-
+        <chart-card style="height:315px"
+          :chart-data="emailsSubscriptionChart.data"
+          :chart-options="emailsSubscriptionChart.options"
+          :chart-responsive-options="emailsSubscriptionChart.responsiveOptions"
+          :chart-type="'Bar'"
+          data-background-color="orange"
+        >
           <template slot="content">
-            <p class="category">Folowers</p>
-            <h3 class="title">+245</h3>
+            <h4 class="title"  style="margin-top:20px;color:black;font-size:20px">CrossLog Analysis</h4>
+            <p class="category" style="margin-bottom:38px">
+              Number of orders per month
+            </p>
           </template>
 
           <template slot="footer">
             <div class="stats">
-              <md-icon>update</md-icon>
-              Just Updated
+              <md-icon>access_time</md-icon>
+              updated 10 days ago
             </div>
           </template>
-        </stats-card>
+        </chart-card>
       </div>
+
+          <!-- // ORDERS TABLE // -->
+            <div
+        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-100"
+      >
+        <md-card>
+          <md-card-header data-background-color="green">
+            
+            <h4 class="title" style="font-size:25px;width:100%;text-align:center">Order list by day</h4>
+
+          </md-card-header>
+           <md-datepicker style="margin-left:20px;width:95%;margin-top:10px;margin-bottom:-5px" v-model="selectedDate" :md-open-on-focus="false"> <label>Select date</label></md-datepicker>
+          <md-card-content>
+            <simple-table table-header-color="green"></simple-table>
+          </md-card-content>
+        </md-card>
+      </div>
+
+
+
+
+
+      
       <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
+        class="md-layout-item md-medium-size-100 md-xsmall-size-120 md-size-33"
       >
         <chart-card
           :chart-data="dailySalesChart.data"
@@ -152,7 +161,7 @@
         </chart-card>
       </div>
       <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-33"
+        class="md-layout-item md-medium-size-120 md-small-size-100 md-size-40"
       >
         <chart-card
           :chart-data="emailsSubscriptionChart.data"
@@ -162,7 +171,7 @@
           data-background-color="red"
         >
           <template slot="content">
-            <h4 class="title">Email Subscription</h4>
+            <h4 class="title">Number of orders per month</h4>
             <p class="category">
               Last Campaign Performance
             </p>
@@ -237,6 +246,48 @@
           </template>
         </nav-tabs-card>
       </div>
+            <div
+        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
+      >
+        <stats-card data-background-color="red">
+          <template slot="header">
+            <md-icon>info_outline</md-icon>
+          </template>
+
+          <template slot="content">
+            <p class="category">Fixed Issues</p>
+            <h3 class="title">75</h3>
+          </template>
+
+          <template slot="footer">
+            <div class="stats">
+              <md-icon>local_offer</md-icon>
+              Tracked from Github
+            </div>
+          </template>
+        </stats-card>
+      </div>
+      <div
+        class="md-layout-item md-medium-size-50 md-xsmall-size-100 md-size-25"
+      >
+        <stats-card data-background-color="blue">
+          <template slot="header">
+            <i class="fab fa-twitter"></i>
+          </template>
+
+          <template slot="content">
+            <p class="category">Folowers</p>
+            <h3 class="title">+245</h3>
+          </template>
+
+          <template slot="footer">
+            <div class="stats">
+              <md-icon>update</md-icon>
+              Just Updated
+            </div>
+          </template>
+        </stats-card>
+      </div>
     </div>
 
   </div>
@@ -251,6 +302,7 @@ import {
   NavTabsCard,
   NavTabsTable,
   OrderedTable,
+  SimpleTable
 } from "@/components";
 
 export default {
@@ -260,10 +312,12 @@ export default {
     ChartCard,
     NavTabsCard,
     NavTabsTable,
-    OrderedTable
+    OrderedTable,
+    SimpleTable
   },
   data() {
     return {
+      aux: "22",
       selectedDate: new Date(),
       dailySalesChart: {
         data: {
