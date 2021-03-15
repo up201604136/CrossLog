@@ -19,14 +19,6 @@
         <md-icon>alarm</md-icon>
         <p>Alarms and Events</p>
       </sidebar-link>
-      <sidebar-link to="/typography">
-        <md-icon>library_books</md-icon>
-        <p>Typography</p>
-      </sidebar-link>
-      <sidebar-link to="/icons">
-        <md-icon>bubble_chart</md-icon>
-        <p>Icons</p>
-      </sidebar-link>
       <sidebar-link to="#">
         <md-icon>logout</md-icon>
         <p @click="$keycloak.logoutFn" v-if="$keycloak.authenticated">Logout</p>

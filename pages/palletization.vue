@@ -1,5 +1,8 @@
 <template>
   <div class="content">
+    <h5 v-if="client.connected == 1" style="margin-top:-10px;margin-left:20px"><md-icon style="color:#00cc00;margin-top:-8px">wifi</md-icon> <b>Online</b></h5>
+    <h5 v-if="client.connected == 0" style="margin-top:-10px;margin-left:20px"><md-icon style="color:red;margin-top:-8px">wifi_off</md-icon> <b>Offline</b></h5>
+   
     <div class="card_and_svg">
       <div
         id="card1"
@@ -72,7 +75,7 @@
           <template slot="footer">
             <div class="stats">
               <md-icon class="text-danger">warning</md-icon>
-              <a href="#pablo">Problems with an order?</a>
+              <a style="cursor:pointer" @click="doPublish_order" >Report a problem with this system</a>
             </div>
           </template>
         </stats-card>
@@ -148,6 +151,7 @@
 
 <script>
 import { StatsCard } from "@/components";
+import mqtt from "mqtt";
 
 export default {
   name: "dynamic_acc",
@@ -156,9 +160,136 @@ export default {
   },
   data() {
     return {
-      activeVal: "recent" // change this value dynamically
+      activeVal: "recent", // change this value dynamically
+      connection: {
+        host: "127.0.0.1",
+        port: 9000,
+        endpoint: "",
+        clean: true, // 保留会话
+        connectTimeout: 4000, // 超时时间
+        reconnectPeriod: 4000, // 重连时间间隔
+        // 认证信息
+        clientId: "f8fd7d67-11d7-409b-acfb-f4f1da9ef440",
+        username: "admin",
+        password: "admin"
+      },
+      subscription: {
+        topic: "topic/full_system",
+        qos: 0
+      },
+      publish: {
+        topic: "topic/hello",
+        qos: 0,
+        payload: '{ "msg": "Hello, this is working." }'
+      },
+      publish_order: {
+        topic: "topic/home_page",
+        qos: 0,
+        payload: '{ "type": "Alarm","msg": "Problem with a subsystem", "location": "Palletization", "solved": "no" }'
+      },
+      receiveNews: "",
+      id_weight: "",
+      message: "",
+      qosList: [
+        { label: 0, value: 0 },
+        { label: 1, value: 1 },
+        { label: 2, value: 2 }
+      ],
+      client: {
+        connected: false
+      },
+      subscribeSuccess: false
     };
-  }
+  },
+   methods: {
+    // 创建连接
+    createConnection() {
+      const { host, port, endpoint, ...options } = this.connection;
+      const connectUrl = `ws://${host}:${port}${endpoint}`;
+      try {
+        this.client = mqtt.connect(connectUrl, options);
+      } catch (error) {
+        console.log("mqtt.connect error", error);
+      }
+      this.client.on("connect", () => {
+        console.log("Connection succeeded!");
+      });
+      this.client.on("error", error => {
+        console.log("Connection failed", error);
+      });
+      this.client.on("message", (topic, message) => {
+        this.receiveNews = this.receiveNews.concat(message);
+        var obj = JSON.parse(message);
+        console.log(obj);
+        this.id_weight = obj.id_weight;
+
+        console.log(`Received message ${message} from topic ${topic}`);
+      });
+    },
+    // 订阅主题
+    doSubscribe() {
+      const { topic, qos } = this.subscription;
+      this.client.subscribe(topic, { qos }, (error, res) => {
+        if (error) {
+          console.log("Subscribe to topics error", error);
+          return;
+        }
+        this.subscribeSuccess = true;
+        console.log("Subscribe to topics res", res);
+      });
+    },
+    // 取消订阅
+    doUnSubscribe() {
+      const { topic } = this.subscription;
+      this.client.unsubscribe(topic, error => {
+        if (error) {
+          console.log("Unsubscribe error", error);
+        }
+      });
+    },
+    // 发送消息
+    doPublish() {
+      const { topic, qos, payload } = this.publish;
+      this.client.publish(topic, payload, qos, error => {
+        if (error) {
+          console.log("Publish error", error);
+        }
+      });
+    },
+    doPublish_order() {
+      const { topic, qos, payload } = this.publish_order;
+      this.client.publish(topic, payload, qos, error => {
+        if (error) {
+          console.log("Publish error", error);
+        }
+        alert("An alarm / event was set!");
+      });
+    },
+    // 断开连接
+    destroyConnection() {
+      if (this.client.connected) {
+        try {
+          this.client.end();
+          this.client = {
+            connected: false
+          };
+          console.log("Successfully disconnected!");
+        } catch (error) {
+          console.log("Disconnect failed", error.toString());
+        }
+      }
+    }
+  },
+    // when page loads, call these functions --> Create connection to MQQT Broker + Subscribe to the topic
+  beforeMount() {
+    this.createConnection();
+    this.doSubscribe();
+
+  },
+  beforeDestroy() {
+    this.destroyConnection();
+     this.doUnSubscribe();
+ }
 };
 </script>
 <style scoped>
